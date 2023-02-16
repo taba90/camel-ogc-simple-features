@@ -1,6 +1,7 @@
 package it.fox.gis.camel.component;
 
 import org.apache.camel.Consumer;
+import org.apache.camel.Producer;
 import org.apache.camel.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,8 @@ class FeatureComponentStrategyFactory {
                 strategy = strategyForGET(resultType, service);
                 break;
             case ADD:
-                strategy = new AddStrategy(service);
+                if (service instanceof Producer) strategy = new AddStrategy(service);
+                else throw new RuntimeException("Cannot use ADD operation with consumers...");
                 break;
             case DELETE:
                 strategy = new DeleteStrategy(service);

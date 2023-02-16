@@ -2,6 +2,7 @@ package it.fox.gis.camel.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.concurrent.locks.StampedLock;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -62,7 +63,7 @@ class DefaultResourceRegistry implements ResourceRegistry {
             if (!propertiesCache.containsKey(name)) {
                 stamp = toWriteLock(stamp);
                 if (!propertiesCache.containsKey(name)) {
-                    File file = new File(fileURI);
+                    File file = new File(Path.of(fileURI).toUri());
                     PropertiesWatcher propertiesWatcher = new PropertiesWatcher(file);
                     propertiesCache.put(name, propertiesWatcher);
                 }

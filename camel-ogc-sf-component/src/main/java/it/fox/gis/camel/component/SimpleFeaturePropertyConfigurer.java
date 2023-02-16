@@ -46,7 +46,12 @@ public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
                 sfe.setCrs(convert(value, CoordinateReferenceSystem.class));
                 break;
             case PROPERTIES_URI:
-                sfe.setPropertiesURI(convert(value, String.class));
+                sfe.setPropertiesURI(
+                        optional(value, String.class)
+                                .orElseThrow(
+                                        () ->
+                                                new UnsupportedOperationException(
+                                                        "propertiesFileURI cannot be NULL")));
                 break;
             case CQL_QUERY:
                 Query query = new Query();
@@ -63,6 +68,10 @@ public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
 
     private <T> T convert(Object value, Class<T> type) {
         return convertOrDefault(value, type, null);
+    }
+
+    private <T> Optional<T> optional(Object value, Class<T> type) {
+        return Optional.ofNullable(convertOrDefault(value, type, null));
     }
 
     private Filter filter(Object cql) {
