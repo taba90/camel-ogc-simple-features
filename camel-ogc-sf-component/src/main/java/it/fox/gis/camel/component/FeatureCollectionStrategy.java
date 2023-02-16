@@ -1,6 +1,7 @@
 package it.fox.gis.camel.component;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Service;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -11,12 +12,18 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 class FeatureCollectionStrategy extends AbstractFeatureComponentStrategy {
 
+    public FeatureCollectionStrategy(Service service) {
+        super(service);
+    }
+
     @Override
-    public void setMessage(
+    public int setMessage(
             Exchange exchange,
             SimpleFeatureSource featureSource,
             Query query,
             CoordinateReferenceSystem crs) {
         exchange.getMessage().setBody(reproject(collection(featureSource, query), crs));
+        processExchange(exchange);
+        return 1;
     }
 }

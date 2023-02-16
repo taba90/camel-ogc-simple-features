@@ -2,6 +2,7 @@ package it.fox.gis.camel.component;
 
 import java.io.IOException;
 import org.apache.camel.Exchange;
+import org.apache.camel.Service;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -14,8 +15,12 @@ class DeleteStrategy extends AbstractFeatureComponentStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteStrategy.class);
 
+    public DeleteStrategy(Service service) {
+        super(service);
+    }
+
     @Override
-    public void setMessage(
+    public int setMessage(
             Exchange exchange,
             SimpleFeatureSource source,
             Query query,
@@ -30,5 +35,7 @@ class DeleteStrategy extends AbstractFeatureComponentStrategy {
             LOGGER.error("Error while deleting features. Error is " + e.getMessage(), e);
             exchange.setException(e);
         }
+        processExchange(exchange);
+        return 1;
     }
 }

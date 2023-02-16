@@ -1,7 +1,6 @@
 package it.fox.gis.camel.component;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 import org.apache.camel.Exchange;
@@ -35,20 +34,13 @@ public class SimpleFeaturesPollingAndSplitTest extends BaseTestSupport {
                 .forEach(e -> assertFeature(e.getMessage().getBody(SimpleFeature.class)));
     }
 
-    private void assertFeature(SimpleFeature simpleFeature) {
-        assertNotNull(simpleFeature.getDefaultGeometry());
-        assertNotNull(simpleFeature.getAttribute("stringProperty"));
-        assertNotNull(simpleFeature.getAttribute("doubleProperty"));
-        assertNotNull(simpleFeature.getAttribute("intProperty"));
-    }
-
     @Override
     protected RouteBuilder createRouteBuilder() {
         String propsURI = getClass().getResource("datastore.properties").getFile();
         return new RouteBuilder() {
             @Override
             public void configure() {
-                from("ogc-sf:test-h2-store?featureType=ft1&resultType=STREAM&repeatCount=1&propertiesURI="
+                from("ogc-sf:test-h2-store?featureType=ft1&resultType=ITERATOR&repeatCount=1&propertiesURI="
                                 + propsURI)
                         .to("mock:test")
                         .split()

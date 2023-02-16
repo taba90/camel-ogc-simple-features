@@ -18,24 +18,19 @@ public class SimpleFeatureConsumer extends ScheduledPollConsumer {
     @Override
     protected int poll() throws Exception {
         Exchange exchange = createExchange(false);
-        try {
-            SimpleFeaturesEndpoint sfe = (SimpleFeaturesEndpoint) getEndpoint();
-            FeatureComponentStrategy strategy =
-                    FeatureComponentStrategyFactory.createStrategy(
-                            sfe.getOperation(), sfe.getResultType());
-            DataStore store =
-                    sfe.getRegistry().loadDataStore(sfe.getDataStoreName(), sfe.getPropertiesURI());
-            SimpleFeatureSource sfs = store.getFeatureSource(sfe.getFeatureType());
-            Query query =
-                    new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery())
-                            .buildFinalQuery(exchange.getIn().getBody());
-            strategy.setMessage(exchange, sfs, query, sfe.getCrs());
-            int result = sfs.getFeatures(query).size();
-            getProcessor().process(exchange);
-            return result;
-        } finally {
-            releaseExchange(exchange, false);
-        }
+        SimpleFeaturesEndpoint sfe = (SimpleFeaturesEndpoint) getEndpoint();
+        FeatureComponentStrategy strategy =
+                FeatureComponentStrategyFactory.createStrategy(
+                        this, sfe.getOperation(), sfe.getResultType());
+        DataStore store =
+                sfe.getRegistry().loadDataStore(sfe.getDataStoreName(), sfe.getPropertiesURI());
+        SimpleFeatureSource sfs = store.getFeatureSource(sfe.getFeatureType());
+        Query query =
+                new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery())
+                        .buildFinalQuery(exchange.getIn().getBody());
+        strategy.setMessage(exchange, sfs, query, sfe.getCrs());
+        int result = sfs.getFeatures(query).size();
+        return result;
     }
 
     @Override

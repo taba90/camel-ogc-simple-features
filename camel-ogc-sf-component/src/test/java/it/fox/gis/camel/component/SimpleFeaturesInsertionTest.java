@@ -1,7 +1,6 @@
 package it.fox.gis.camel.component;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 import org.apache.camel.builder.RouteBuilder;
@@ -21,13 +20,6 @@ public class SimpleFeaturesInsertionTest extends BaseTestSupport {
         List<SimpleFeature> result = endpoint.getExchanges().get(0).getIn().getBody(List.class);
         assertEquals(4, result.size());
         result.forEach(f -> assertFeature(f));
-    }
-
-    private void assertFeature(SimpleFeature simpleFeature) {
-        assertNotNull(simpleFeature.getDefaultGeometry());
-        assertNotNull(simpleFeature.getAttribute("stringProperty"));
-        assertNotNull(simpleFeature.getAttribute("doubleProperty"));
-        assertNotNull(simpleFeature.getAttribute("intProperty"));
     }
 
     @Override

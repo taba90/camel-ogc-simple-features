@@ -2,6 +2,9 @@ package it.fox.gis.camel.component;
 
 import java.io.IOException;
 import java.util.Optional;
+import org.apache.camel.Consumer;
+import org.apache.camel.Exchange;
+import org.apache.camel.Service;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -19,6 +22,12 @@ abstract class AbstractFeatureComponentStrategy implements FeatureComponentStrat
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(AbstractFeatureComponentStrategy.class);
+
+    private Service service;
+
+    protected AbstractFeatureComponentStrategy(Service service) {
+        this.service = service;
+    }
 
     /**
      * Wrap a {@link SimpleFeatureCollection} with a {@link ReprojectingFeatureCollection} if
@@ -56,5 +65,23 @@ abstract class AbstractFeatureComponentStrategy implements FeatureComponentStrat
                     e);
             throw new RuntimeException(e);
         }
+    }
+
+    protected void processExchange(Exchange exchange) {
+        if (service instanceof Consumer) {
+            Consumer consumer = (Consumer) service;
+            try {
+                consumer.getProcessor().process(exchange);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                consumer.releaseExchange(exchange, false);
+            }
+        }
+    }
+
+    protected Consumer getConsumer() {
+        if (service instanceof Consumer) return (Consumer) service;
+        return null;
     }
 }

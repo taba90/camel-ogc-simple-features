@@ -18,8 +18,9 @@ public interface FeatureComponentStrategy {
      * @param source the {@link SimpleFeatureSource} instance provided by the producer or consumer.
      * @param query a {@link Query} object.
      * @param crs the target {@link CoordinateReferenceSystem}.
+     * @return the number of messages.
      */
-    void setMessage(
+    int setMessage(
             Exchange exchange,
             SimpleFeatureSource source,
             Query query,
