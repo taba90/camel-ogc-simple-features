@@ -1,0 +1,23 @@
+<assembly>
+    <id>camel-ogc-simple-features</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>../camel-ogc-sf-component/target/dependency</directory>
+            <outputDirectory>./dependencies</outputDirectory>
+            <includes>
+                <include>gt*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../camel-ogc-sf-component/target</directory>
+            <outputDirectory>./binaries</outputDirectory>
+            <includes>
+                <include>camel-ogc-sf-component-*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>
