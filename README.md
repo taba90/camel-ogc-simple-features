@@ -29,15 +29,25 @@ The component support the following parameters:
 
 ### Example usage
 
-Read data from ft1 table, obtaining a SimpleFeatureIterator that gets splitted.
+Read data from ft1 table, obtaining a SimpleFeatureIterator and then split it.
+```java
+
+   @Override
+   public void configure() {
+       from("ogc-sf:test-h2-store?featureType=ft1&resultType=ITERATOR&repeatCount=1&propertiesURI=/path/to/datastore.properties")
+       .split()
+       .body()
+       .to("mock:test");
+  }
+```
+
+Read data from ft1 table, obtaining a stream of Simple Features.
 ```java
 
    @Override
    public void configure() {
        from("ogc-sf:test-h2-store?featureType=ft1&resultType=STREAM&repeatCount=1&propertiesURI=/path/to/datastore.properties")
-       .split()
-       .body()
-       .to("mock:test2");
+       .to("mock:test");
   }
 ```
 
