@@ -1,6 +1,6 @@
 # camel-ogc-simple-features
 
-A library to integrate [GeoTools](https://www.geotools.org/) DataStores in a Camel routes. Thus it allows to use the GeoTools SimpleFeatureCollection and SimpleFeatureIterator API to route and process messages in Camel.
+A library to integrate [GeoTools](https://www.geotools.org/) DataStores in a Camel route. It allows to use the GeoTools SimpleFeatureCollection and SimpleFeatureIterator API to route and process messages in Camel.
 
 
 ## BUILD
@@ -9,7 +9,7 @@ A library to integrate [GeoTools](https://www.geotools.org/) DataStores in a Cam
 
 ## Usage
 
-The library provides a Simple Features component that can be both used both as a polling consumer and as a producer.
+The library provides a Simple Features component that can be used both as a polling consumer and as a producer.
 
 The syntax to declare the endpoint is as follow:
 ``ogc-sf:{dataStoreName}?`` where the datastore name is any name that the client code want to assign to a GeoTools DataStore. Endpoint using the same dataStoreName will share the DataStore instance.
