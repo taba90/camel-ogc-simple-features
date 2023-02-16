@@ -6,7 +6,6 @@ import org.apache.camel.spi.PropertyConfigurer;
 import org.geotools.data.Query;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -44,11 +43,7 @@ public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
                 sfe.setFeatureType(convert(value, String.class));
                 break;
             case CRS:
-                sfe.setCrs(
-                        convertOrDefault(
-                                value,
-                                CoordinateReferenceSystem.class,
-                                DefaultGeographicCRS.WGS84));
+                sfe.setCrs(convert(value, CoordinateReferenceSystem.class));
                 break;
             case PROPERTIES_URI:
                 sfe.setPropertiesURI(convert(value, String.class));
