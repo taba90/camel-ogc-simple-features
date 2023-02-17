@@ -26,6 +26,7 @@
   <modules>
     <module>camel-ogc-sf-component</module>
     <module>camel-ogc-expressions</module>
+    <module>camel-ogc-dataformats</module>
   </modules>
 
   <properties>
