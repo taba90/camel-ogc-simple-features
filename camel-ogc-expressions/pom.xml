@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>it.fox.gis</groupId>
     <artifactId>camel-ogc-simple-features</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-
-  <artifactId>camel-ogc-sf-component</artifactId>
+  <artifactId>camel-ogc-expressions</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-
-  <name>camel-ogc-sf-component</name>
-
+  <name>camel-ogc-expressions</name>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -63,8 +61,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
-    <!-- test dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test-spring-junit5</artifactId>
@@ -116,21 +117,37 @@
       <artifactId>hamcrest</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>it.fox.gis</groupId>
+      <artifactId>camel-ogc-sf-component</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>it.fox.gis</groupId>
+      <artifactId>camel-ogc-sf-component</artifactId>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-package-maven-plugin</artifactId>
+        <version>${camel.version}</version>
         <executions>
           <execution>
-            <phase>install</phase>
+            <id>generate</id>
+            <phase>process-classes</phase>
             <goals>
-              <goal>copy-dependencies</goal>
+              <goal>generate-languages-list</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <failFast>false</failFast>
+        </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>

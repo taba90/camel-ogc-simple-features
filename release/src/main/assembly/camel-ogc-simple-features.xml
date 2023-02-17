@@ -17,6 +17,7 @@
             <outputDirectory>./binaries</outputDirectory>
             <includes>
                 <include>camel-ogc-sf-component-*.jar</include>
+                <include>camel-ogc-expressions-*.jar</include>
             </includes>
         </fileSet>
     </fileSets>
