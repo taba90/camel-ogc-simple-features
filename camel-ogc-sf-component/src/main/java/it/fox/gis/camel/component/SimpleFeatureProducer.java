@@ -26,7 +26,7 @@ public class SimpleFeatureProducer extends DefaultProducer {
                 FeatureComponentStrategyFactory.createStrategy(
                         this, sfe.getOperation(), sfe.getResultType());
         Query query =
-                new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery())
+                new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery(), sfe.getProperties())
                         .buildFinalQuery(exchange.getIn().getBody());
         strategy.setMessage(exchange, sfs, query, sfe.getCrs());
     }

@@ -1,16 +1,23 @@
 package it.fox.gis.camel.component;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.camel.CamelContext;
 import org.apache.camel.spi.PropertyConfigurer;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.Query;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.Converters;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
+
+    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
     static final String RESULT_TYPE = "resultType";
     static final String OPERATION = "operation";
 
@@ -19,6 +26,8 @@ public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
     static final String FEATURE_TYPE = "featureType";
 
     static final String PROPERTIES_URI = "propertiesURI";
+
+    static final String PROPERTIES = "properties";
 
     static final String CRS = "crs";
 
@@ -58,6 +67,13 @@ public class SimpleFeaturePropertyConfigurer implements PropertyConfigurer {
                 query.setFilter(filter(value));
                 sfe.setCqlQuery(query);
                 break;
+            case PROPERTIES:
+                String props = optional(value, String.class).orElse(null);
+                if (StringUtils.isNotBlank(props)) {
+                    sfe.setProperties(
+                            Stream.of(props).map(s -> FF.property(s)).collect(Collectors.toList()));
+                }
+
             default:
                 result = false;
                 break;

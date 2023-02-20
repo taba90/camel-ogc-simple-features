@@ -26,9 +26,10 @@ public class SimpleFeatureConsumer extends ScheduledPollConsumer {
                 sfe.getRegistry().loadDataStore(sfe.getDataStoreName(), sfe.getPropertiesURI());
         SimpleFeatureSource sfs = store.getFeatureSource(sfe.getFeatureType());
         Query query =
-                new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery())
+                new QueryHelper(sfe.getFeatureType(), sfe.getCqlQuery(), sfe.getProperties())
                         .buildFinalQuery(exchange.getIn().getBody());
         strategy.setMessage(exchange, sfs, query, sfe.getCrs());
+        exchange.getIn().setBody(sfs.getFeatures(query.getFilter()).size());
         int result = sfs.getFeatures(query).size();
         return result;
     }

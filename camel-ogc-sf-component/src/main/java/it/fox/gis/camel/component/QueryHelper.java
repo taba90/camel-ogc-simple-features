@@ -1,11 +1,13 @@
 package it.fox.gis.camel.component;
 
+import java.util.List;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.PropertyName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +18,12 @@ class QueryHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureProducer.class);
     private String featureType;
     private Query endpointQuery;
+    private List<PropertyName> propertyNames;
 
-    QueryHelper(String featureType, Query endpointQuery) {
+    QueryHelper(String featureType, Query endpointQuery, List<PropertyName> properties) {
         this.featureType = featureType;
         this.endpointQuery = endpointQuery;
+        this.propertyNames = properties;
     }
 
     /**
@@ -41,6 +45,8 @@ class QueryHelper {
                 }
                 endpointQuery.setFilter(filter);
                 endpointQuery.setTypeName(featureType);
+                if (propertyNames == null) endpointQuery.setProperties(Query.ALL_PROPERTIES);
+                else endpointQuery.setProperties(propertyNames);
             } catch (CQLException e) {
                 LOGGER.error(
                         "Error while trying to read the body as a CQL filter. Ignoring it...", e);

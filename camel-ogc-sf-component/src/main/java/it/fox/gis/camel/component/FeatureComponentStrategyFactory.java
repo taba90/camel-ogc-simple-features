@@ -30,6 +30,9 @@ class FeatureComponentStrategyFactory {
                 if (service instanceof Producer) strategy = new AddStrategy(service);
                 else throw new RuntimeException("Cannot use ADD operation with consumers...");
                 break;
+            case MODIFY:
+                if (service instanceof Producer) strategy = new ModifyStrategy(service);
+                else throw new RuntimeException("Cannot use MODIFY operation with consumers...");
             case DELETE:
                 strategy = new DeleteStrategy(service);
                 break;

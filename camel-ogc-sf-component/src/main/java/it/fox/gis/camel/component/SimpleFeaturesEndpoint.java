@@ -1,5 +1,6 @@
 package it.fox.gis.camel.component;
 
+import java.util.List;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
@@ -9,6 +10,7 @@ import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriPath;
 import org.apache.camel.support.ScheduledPollEndpoint;
 import org.geotools.data.Query;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** A SimpleFeature endpoint supporting both consuming and producing. */
@@ -46,6 +48,8 @@ public class SimpleFeaturesEndpoint extends ScheduledPollEndpoint {
     @UriParam
     @Metadata(defaultValue = "GET")
     private Operation operation;
+
+    @UriParam private List<PropertyName> properties;
 
     public SimpleFeaturesEndpoint(
             ResourceRegistry registry, String dataStoreName, SimpleFeatureComponent component) {
@@ -125,6 +129,14 @@ public class SimpleFeaturesEndpoint extends ScheduledPollEndpoint {
 
     public ResourceRegistry getRegistry() {
         return registry;
+    }
+
+    public List<PropertyName> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<PropertyName> properties) {
+        this.properties = properties;
     }
 
     @Override
